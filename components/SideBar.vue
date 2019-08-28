@@ -30,7 +30,7 @@
     props: {
       title: {
         type: String,
-        default: 'LG CNS'
+        default: 'YJLEE'
       },
       backgroundColor: {
         type: String,
