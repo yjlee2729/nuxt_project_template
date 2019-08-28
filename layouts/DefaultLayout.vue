@@ -4,7 +4,7 @@
     <div class="main-panel">
       <top-navbar></top-navbar>
 
-      <dashboard-content class="main-contents p-lg">
+      <dashboard-content class="main-contents p-md">
       </dashboard-content>
 
       <!-- <content-footer></content-footer> -->

@@ -322,6 +322,7 @@ body > .navbar-collapse{
         margin-top:  $header-height;
         overflow-y: scroll;
         height: $contents-height;
+        width: 100%;
     }
 }
 

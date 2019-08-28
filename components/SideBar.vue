@@ -61,8 +61,18 @@
       return {
         sidebarLinks: [{
             name : 'home',
-            icon : 'nc-icon nc-alien-33',
+            icon : 'nc-icon nc-air-baloon',
             path : '/'
+          },
+          {
+            name : 'Dashboard',
+            icon : 'nc-icon nc-chart-pie-35',
+            path : '/dashboard'
+          },
+          {
+            name : 'Test',
+            icon : 'nc-icon nc-settings-90',
+            path : '/test'
           }
         ]
       }
