@@ -27,6 +27,7 @@ module.exports = {
     { src: 'bootstrap/dist/css/bootstrap.css'},
     { src: '@/assets/sass/light-bootstrap-dashboard.scss', lang: 'scss'},
     { src: 'vue-loading-overlay/dist/vue-loading.css'},
+    { src: 'vue-multiselect/dist/vue-multiselect.min.css'},
     { src: '@/assets/sass/margin-padding.scss', lang: 'scss'},
     { src: '@/assets/sass/main.scss', lang: 'scss' }    
   ],

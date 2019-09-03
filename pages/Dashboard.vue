@@ -7,45 +7,59 @@
                         <!-- <h6 slot="header" class="card-title">조회 조건</h6> -->                        
                         <b-row>
                             <div class="col-lg-2">
-                                <h5 class="m-b-xs">CHATBOT</h5>
+                                <h5 class="m-b-xs">{{msg.CHATBOT}}</h5>
                                 <b-row>
                                     <b-col>
-                                        <b-form-select id="chatbot" size="sm"  v-model="selected" :options="options"></b-form-select>
+                                        <m-select id="chatbot" placeholder="Search & Select Chatbot"  v-model="selectedChatbot" :options="chatbotList" 
+                                        :label="'chatbot_name'" :value="'chatbot_id'" :searchable="true" :track-by="'chatbot_id'" 
+                                        select-label=" " deselect-label=" " @input="print()">
+                                        <span slot="noResult">{{msg.NO_RESULT}}</span>
+                                        </m-select>
                                     </b-col>
-                                </b-row>
-                            </div>
-                            <div class="col-lg-4">
-                                <h5 class="m-b-xs">USER</h5>
-                                <b-row>
-                                    <b-col>
-                                        <label for="users" class="m-r-sm">기준</label>
-                                        <b-form-select id="users" size="sm" class="user-select" v-model="selected" :options="options"></b-form-select>
-                                    </b-col>
-                                    <b-col>
-                                        <label for="users" class="m-r-sm">상세</label>
-                                        <b-form-select id="users" size="sm" class="user-select" v-model="selected" :options="options"></b-form-select>
-                                    </b-col>                                
                                 </b-row>
                             </div>
                             <div class="col-lg-5">
-                                <h5 class="m-b-xs">DATE</h5>
+                                <h5 class="m-b-xs">{{msg.USER}}</h5>
                                 <b-row>
                                     <b-col>
-                                        <label for="users" class="m-r-sm">기준</label>
-                                        <b-form-select id="users" size="sm" class="user-select" v-model="selected" :options="options"></b-form-select>
+                                        <label for="users" class="m-r-sm">{{msg.SEARCH_BASE}}</label>
+                                        <m-select id="users" placeholder="Select"  class="user-select" v-model="selectedUserBase" :options="userSearchBaseList" 
+                                        :label="'label'" :value="'value'" :track-by="'value'" :searchable="false"
+                                        select-label=" " deselect-label=" " @input="searchDetail()">                                      
+                                        </m-select>
                                     </b-col>
                                     <b-col>
-                                        <label for="users" class="m-r-sm">날짜</label>
-                                        <v-date-picker class="custom-calendar" mode='single' v-model='selectedDate'></v-date-picker>
+                                        <label for="users" class="m-r-sm">{{msg.SEARCH_DETAIL}}</label><!--변경 필요-->
+                                        <m-select id="users" placeholder="Select"  class="user-select" v-model="selectedUserBase" :options="userSearchBaseList" 
+                                        :label="'label'" :value="'value'" :track-by="'value'" 
+                                        select-label=" " deselect-label=" " @input="searchDetail()">                                      
+                                        </m-select>
+                                    </b-col>                                
+                                </b-row>
+                            </div>
+                            <div class="col-lg-4">
+                                <h5 class="m-b-xs">{{msg.DATE}}</h5>
+                                <b-row>
+                                    <div class="col-lg-5 p-r-none">
+                                        <label for="users" class="m-r-sm">{{msg.SEARCH_BASE}}</label>
+                                        <m-select id="users" placeholder="Select"  class="user-select" v-model="selectedDateBase" :options="dateSearchBaseList" 
+                                        :label="'label'" :value="'value'" :track-by="'value'" :searchable="false"
+                                        select-label=" " deselect-label=" " @input="searchDetail()">                          
+                                        </m-select>
+                                    </div>
+                                    <div class="col-lg-7">
+                                        <label for="users" class="m-r-sm">{{msg.SEARCH_DATE}}</label>
+                                        <v-date-picker class="custom-calendar" mode='single' v-model='selectedDate'>
+                                        </v-date-picker>
                                         <!-- <b-row>
                                             <div class= "col-lg-2 min-col p-none"><label for="users" class="m-r-sm">날짜</label></div>
                                             <div class="col-lg-10 max-col p-none"><v-date-picker class="custom-calendar" mode='single' v-model='selectedDate'></v-date-picker></div>
                                         </b-row> -->
-                                    </b-col>                                
+                                    </div>                           
                                 </b-row>
                             </div>
                             <div class="col-lg-1 t-right" style="margin-top:15px;">
-                                <b-button class="btn-sm m-t-sm" @click="retrieveInformation()">조회</b-button>                                
+                                <b-button class="m-t-sm" @click="retrieveInformation()">{{msg.SEARCH}}</b-button>                                
                             </div>
                         </b-row>
                     </card>
@@ -77,7 +91,7 @@
                         </b-tabs>
                         <div slot="footer">
                             <b-button class="btn-info btn-sm" @click="excelDownload()">
-                                <i class="nc-icon nc-cloud-download-93 m-r-sm"></i><span style="position:relative;top:-1;">Download</span>
+                                <i class="nc-icon nc-cloud-download-93 m-r-sm"></i><span style="position:relative;top:-1;">{{msg.DOWNLOAD}}</span>
                             </b-button>
                         </div>
                     </b-card>
@@ -93,16 +107,38 @@ import $ from 'jquery'
 import { saveAs } from 'file-saver'
 import Card from '~/components/Cards/Card.vue'
 import LTable from '~/components/Table.vue'
+import MSelect from 'vue-multiselect'
+import Message from '~/server/util/constantsMsg.js'
+
+const default_chatbot = {chatbot_id : 'all', chatbot_name : 'ALL'}
+const user_search_base = [
+    {label : '부서', value : '부서'},
+    {label : '지점', value : '지점'},
+    {label : '직원', value : '직원'},
+]
+
+const date_search_base = [
+    {label : '시간별', value : 'hour'},
+    {label : '일별', value : 'day'},
+    {label : '월별', value : 'month'},
+]
 
 export default {
   components: { // 현재 template에 추가해서 사용하는 component
     Card,
-    LTable
+    LTable,
+    MSelect
   },
   layout: 'DefaultLayout',
   data(){
     return {
       tabIndex : 0,
+      msg : Message,
+      selectedChatbot : default_chatbot,
+      userSearchBaseList : user_search_base,
+      dateSearchBaseList : date_search_base,
+      selectedUserBase : null,
+      selectedDateBase : null,
       selected: '',
       options : [
           { value: 1, text: 'Please select an option' },
@@ -148,14 +184,17 @@ export default {
     }
   },
   async asyncData({ app, query }) {
-    // rendering 전에 가지고올 데이터
-    // try{
-        //여기에서 chatbot 정보 및 user 정보 조회 필요
-    //   const chatbots = await app.$axios.$get('/api/login');
-    //   return { chatbots }
-    // }catch(err){
-    //   console.log(err)
-    // }
+    try{
+        var chatbots = await app.$axios.$get('/api/common/chatbot');
+        var chatbotTemps = _.map(chatbots, (chatbot)=>{
+            return {chatbot_name : chatbot.chatbot_name , chatbot_id : chatbot.chatbot_id};
+        });
+
+        var chatbotList = [default_chatbot].concat(chatbotTemps);
+        return { chatbotList }
+    }catch(err){
+        console.log(err)
+    }
   },
   methods : {
     retrieveInformation : function(){
@@ -164,7 +203,7 @@ export default {
     excelDownload : async function(){
       var filename = 'test.xlsx';
       var request_param = {
-        url : '/api/statistics/excelDownload',
+        url : '/api/common/excelDownload',
         method: 'POST',
         responseType: 'blob',
         data: {
@@ -176,6 +215,13 @@ export default {
       var result = await this.$axios(request_param);//url , data, config
       var blob = new Blob([result.data], {type: 'vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8'});
       saveAs(blob, filename);
+    },
+    print : function(){
+        console.log(this.selectedChatbot);
+    },
+    searchDetail : function(){
+        //기준에 따른 상세 정보 검색 method
+        console.log(this.selectedUserBase);
     }
   }
 }
@@ -215,6 +261,7 @@ export default {
 
 .user-select {
   width: 80%;
+  display: inline-block;
 }
 
 .custom-select { 
@@ -232,11 +279,11 @@ export default {
 .custom-calendar {
     display:inline-block;
     input {
-        border: 1px solid #ced4da;
+        border: 1px solid #e8e8e8;
         border-radius: 0.25rem;
         line-height: 1.5;
-        padding: 0.438rem 0.75rem;
-        font: 400 13.3333px Arial;
+        padding: 0.75rem 0.65rem; //0.75rem 0.75rem 0.75rem 2rem;
+        font: 400 15px Arial;
     }
 }
 

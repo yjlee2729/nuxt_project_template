@@ -38,6 +38,10 @@
         <button value="temp" @click="getClickTest($event)">eventTest</button>
         <button value="temp" @click="getChangeData()">dataChangeTest</button>
       </div>
+      <multiselect
+        v-model="selected"
+        :options="options">
+      </multiselect>
       <div>
         {{ res }}
       </div>
@@ -52,26 +56,28 @@ import $ from 'jquery'
 import { saveAs } from 'file-saver'
 import PulseLoader from '~/components/Spinner/PulseLoader.vue'
 import Loading from 'vue-loading-overlay'
-import config from '~/server/config/url.js'
+import Multiselect from 'vue-multiselect'
 
 export default {
   components: { // 현재 template에 추가해서 사용하는 component
     Logo,
     PulseLoader,
-    Loading
+    Loading,
+    Multiselect
   },
   layout: 'DefaultLayout',
   data(){
     return {
       test : 'NUXT test project',
-      isLoading : false
+      isLoading : false,
+      selected: null,
+      options: ['list', 'of', 'options']
     }
   },
   async asyncData({ app, query }) {
     // rendering 전에 가지고올 데이터
     try{
       const res = await app.$axios.$get('/api/login');
-      console.log(config);
       return { res }
     }catch(err){
       console.log(err)
@@ -93,7 +99,7 @@ export default {
       this.isLoading = true;
       var filename = 'test.xlsx';
       var request_param = {
-        url : '/api/statistics/excelDownload',
+        url : '/api/common/excelDownload',
         method: 'POST',
         responseType: 'blob',
         data: {
