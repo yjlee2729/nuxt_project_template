@@ -1,6 +1,6 @@
 const express = require('express')
 const consola = require('consola')
-const excelUtil = require('../../common/exportExcel')
+const excelUtil = require('../../../util/exportExcel')
 
 const router = express.Router()
 

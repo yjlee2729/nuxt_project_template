@@ -8,11 +8,14 @@
       <h2 class="subtitle">
         template test
       </h2>
+      
       <b-button @click="excelDownload()">download from server</b-button>
       <b-button variant="danger">button</b-button>
       <b-button variant="success">Button</b-button>
       <b-button variant="outline-primary">Button</b-button>
-      <div class="links">
+      <!-- <pulse-loader :loading="true" :color="'blue'"></pulse-loader> -->
+      <div class="links">     
+        <loading :can-cancel="true" :active.sync="isLoading" :is-full-page="false"></loading> 
         <a
           href="https://nuxtjs.org/"
           target="_blank"
@@ -47,21 +50,28 @@ import Logo from '~/components/Logo.vue'
 import _ from 'lodash'
 import $ from 'jquery'
 import { saveAs } from 'file-saver'
+import PulseLoader from '~/components/Spinner/PulseLoader.vue'
+import Loading from 'vue-loading-overlay'
+import config from '~/server/config/url.js'
 
 export default {
   components: { // 현재 template에 추가해서 사용하는 component
-    Logo
+    Logo,
+    PulseLoader,
+    Loading
   },
   layout: 'DefaultLayout',
   data(){
     return {
-      test : 'NUXT test project'
+      test : 'NUXT test project',
+      isLoading : false
     }
   },
   async asyncData({ app, query }) {
     // rendering 전에 가지고올 데이터
     try{
       const res = await app.$axios.$get('/api/login');
+      console.log(config);
       return { res }
     }catch(err){
       console.log(err)
@@ -80,6 +90,7 @@ export default {
       })
     },
     excelDownload : async function(){
+      this.isLoading = true;
       var filename = 'test.xlsx';
       var request_param = {
         url : '/api/statistics/excelDownload',
@@ -93,6 +104,7 @@ export default {
       var result = await this.$axios(request_param);//url , data, config
       var blob = new Blob([result.data], {type: 'vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8'});
       saveAs(blob, filename);
+      this.isLoading = false;
     }
   }
 }

@@ -26,6 +26,7 @@ module.exports = {
   css: [
     { src: 'bootstrap/dist/css/bootstrap.css'},
     { src: '@/assets/sass/light-bootstrap-dashboard.scss', lang: 'scss'},
+    { src: 'vue-loading-overlay/dist/vue-loading.css'},
     { src: '@/assets/sass/margin-padding.scss', lang: 'scss'},
     { src: '@/assets/sass/main.scss', lang: 'scss' }    
   ],
@@ -33,7 +34,7 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-
+    {src : '~/plugins/v-calendar.js', ssr:false}
   ],
   /*
   ** Nuxt.js dev-modules

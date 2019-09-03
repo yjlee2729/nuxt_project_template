@@ -1,30 +1,23 @@
 <template>
   <div class="container">
-    <div>
+    <div class="box">
       <logo />
-      <h1 class="title">
-        test project
-      </h1>
-      <h2 class="subtitle">
-        template test
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
-        >
-          GitHub
-        </a>
-        <nuxt-link :to="{path : 'test'}">test page</nuxt-link>
+      <form>
+      <h3 class="text-center subtitle">LOGIN</h3>
+      <div class="login-container">
+        <b-row class="m-b-sm position-right">
+          <label class="f-bord-gray m-b-none p-xs m-r-sm" for="user-id"><i class="nc-icon nc-circle-09 m-r-xs"></i>ID</label>
+          <b-input id="user-id" placeholder="Your ID" type="email"/>
+        </b-row>
+        <b-row class="m-b-sm">
+          <label class="f-bord-gray m-b-none p-xs m-r-sm" for="user-pw"><i class="nc-icon nc-lock-circle-open m-r-xs"></i>Password</label>
+          <b-input id="user-pw" placeholder="Your password" type="password"/>
+        </b-row>        
       </div>
+      <div class="text-right">
+        <b-button class="btn-info">Login</b-button>
+      </div>
+    </form>
     </div>
   </div>
 </template>
@@ -40,7 +33,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .container {
   margin: 0 auto;
   min-height: 100vh;
@@ -48,6 +41,12 @@ export default {
   justify-content: center;
   align-items: center;
   text-align: center;
+}
+
+.box {
+  padding: 40px;
+  border: solid #dadada 1px;
+  background: #f7f7f7;
 }
 
 .title {
@@ -70,5 +69,28 @@ export default {
 
 .links {
   padding-top: 15px;
+}
+
+.login-container{
+  width: 500px;
+  i {
+    position: relative;
+    top: 4px;
+    font-weight: 600;
+    font-size: 20px;
+  }
+  input {
+    width:75%;
+  }
+}
+
+.f-bord-gray{
+  font-weight: 600;
+  color:#717171;
+}
+
+.position-right{
+  position:relative;
+  right: -59px;
 }
 </style>

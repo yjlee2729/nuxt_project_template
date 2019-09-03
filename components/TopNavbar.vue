@@ -28,9 +28,9 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <n-link class="nav-link" :to="{path: '/'}">
               Log out
-            </a>
+            </n-link>
           </li>
         </ul>
       </div>
