@@ -35,7 +35,8 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    {src : '~/plugins/v-calendar.js', ssr:false}
+    {src : '~/plugins/v-calendar.js', ssr:false},
+    {src : '~/plugins/v-json.js', ssr:false}
   ],
   /*
   ** Nuxt.js dev-modules
@@ -59,6 +60,7 @@ module.exports = {
     /*
     ** You can extend webpack config here
     */
+    transpile: [/^vue-awesome/,],
     extend (config, ctx) {
       if (ctx.isDev && ctx.isClient) {
         // 개발환경에서 clear한 코드를 위한 조건 임시 제거 - 코드는 나중에 정리하자
@@ -74,4 +76,7 @@ module.exports = {
   serverMiddleware: [// server/api/index.js 모듈을 미들웨어로 추가
     '~/server/api/index.js',
   ],
+  // router: {
+  //   middleware: 'auth'
+  // }
 }

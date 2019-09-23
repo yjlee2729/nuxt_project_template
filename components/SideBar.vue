@@ -4,10 +4,10 @@
        :data-color="backgroundColor"
        :data-image="backgroundImage">
     <div class="sidebar-wrapper">
-      <div class="logo">
-        <a href="#" class="simple-text logo__container">
+      <div class="logo" style="padding:9.5px 15px;">
+        <a href="#" class="simple-text logo__container p-none">
             <div class="logo-img">
-                <img src="img/vue-logo.png" alt="">
+                <img src="" alt="">
             </div>
           {{title}}
         </a>
@@ -42,7 +42,7 @@
       },
       backgroundImage: {
         type: String,
-        default: 'img/sidebar-5.jpg'
+        default: ''
       },
       activeColor: {
         type: String,
@@ -59,15 +59,16 @@
     },
     data () {
       return {
-        sidebarLinks: [{
-            name : 'home',
-            icon : 'nc-icon nc-air-baloon',
-            path : '/'
-          },
+        sidebarLinks: [
           {
             name : 'Dashboard',
             icon : 'nc-icon nc-chart-pie-35',
             path : '/dashboard'
+          },
+          {
+            name : 'Custom',
+            icon : 'nc-icon nc-ruler-pencil',
+            path : '/custom'
           },
           {
             name : 'Test',

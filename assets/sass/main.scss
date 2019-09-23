@@ -1,7 +1,8 @@
 /* -- scroll bar -- */
 /* width */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 8px;
+  height: 6px;
 }
 
 /* Track */
@@ -26,4 +27,13 @@
 
 .t-right{
   text-align: right;
+}
+
+.item-center {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  &.margin-auto {
+    margin: 50px auto;
+  }
 }

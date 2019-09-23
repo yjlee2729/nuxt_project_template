@@ -1,36 +1,25 @@
 <template>
   <nav class="navbar top-navbar navbar-expand-lg">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Dashboard</a>
-      <!-- <button type="button"
-              class="navbar-toggler navbar-toggler-right"
-              :class="{toggled: $sidebar.showSidebar}"
-              aria-controls="navigation-index"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-              @click="toggleSidebar">
-        <span class="navbar-toggler-bar burger-lines"></span>
-        <span class="navbar-toggler-bar burger-lines"></span>
-        <span class="navbar-toggler-bar burger-lines"></span>
-      </button> -->
+      <div class="navbar-brand">{{ routeName }}</div>
       <div class="collapse navbar-collapse justify-content-end">
-        <ul class="nav navbar-nav mr-auto">
+        <!-- <ul class="nav navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="nav-link" href="#" data-toggle="dropdown">
+            <div class="m-t-sm m-l-xs">
               <i class="nc-icon nc-palette"></i>
-            </a>
+            </div>
           </li>
-        </ul>
+        </ul> -->
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link" href="#">
               Account
             </a>
-          </li>
+          </li> -->
           <li class="nav-item">
-            <n-link class="nav-link" :to="{path: '/'}">
+            <a class="nav-link" @click="logout()">
               Log out
-            </n-link>
+            </a>
           </li>
         </ul>
       </div>
@@ -56,6 +45,14 @@
       }
     },
     methods: {
+      async logout (){
+        try {
+          await this.$store.dispatch('logout')
+          this.$router.push('/');
+        } catch (e) {
+          
+        }
+      },
       capitalizeFirstLetter (string) {
         return string.charAt(0).toUpperCase() + string.slice(1)
       },
@@ -75,5 +72,9 @@
   }
 </script>
 <style lang="scss">
-
+.nav-item {
+  a {
+    cursor: pointer;
+  }
+}
 </style>

@@ -43,6 +43,10 @@
         :options="options">
       </multiselect>
       <div>
+        <p><v-icon name="exclamation-circle" scale="3"/></p>
+        <p><v-icon name="question-circle"/></p>
+      </div>
+      <div>
         {{ res }}
       </div>
     </div>
@@ -57,13 +61,18 @@ import { saveAs } from 'file-saver'
 import PulseLoader from '~/components/Spinner/PulseLoader.vue'
 import Loading from 'vue-loading-overlay'
 import Multiselect from 'vue-multiselect'
+import 'vue-awesome/icons/exclamation-circle'
+import 'vue-awesome/icons/question-circle'
+import VIcon from 'vue-awesome/components/Icon'
 
 export default {
+  //components 추가 시 docuemnt undefined error의 경우 <client-only> tag로 묶어주기
   components: { // 현재 template에 추가해서 사용하는 component
     Logo,
     PulseLoader,
     Loading,
-    Multiselect
+    Multiselect,
+    VIcon
   },
   layout: 'DefaultLayout',
   data(){

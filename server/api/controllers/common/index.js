@@ -1,16 +1,16 @@
 const express = require('express')
 const consola = require('consola')
 
-const db = require('../../../util/db')
-const chatbot = require('../../models/chatbot')
-const excelUtil = require('../../../util/exportExcel')
+const db = require('@util/db')
+const chatbot = require('@models/chatbot')
+const excelUtil = require('@util/exportExcel')
 
 const router = express.Router()
 
 router.get('/chatbot', (req, res, next)=>{
-    var sql = chatbot.retreiveChatbotList;
+    var sql = chatbot.retrieveChatbotList;
     
-    var susscess = function(result){
+    var success = function(result){
         res.send(result)
     }
 
@@ -18,7 +18,7 @@ router.get('/chatbot', (req, res, next)=>{
         res.send(error)
     }
     
-    db.query(sql, [], susscess, error)
+    db.query(sql, [], success, error)
 });
 
 router.post('/excelDownload', (req, res, next)=>{
@@ -35,6 +35,24 @@ router.post('/excelDownload', (req, res, next)=>{
     
     return workbook.xlsx.write(res)
     .then(function() {        
+        res.end();
+    });
+});
+
+
+router.post('/excelMultiSheetDownload', (req, res, next)=>{
+    var body = req.body;
+
+    var filename = body.filename + '.xlsx' || 'untitle.xlsx';
+    var sheetDatas = body.datas || [];
+
+    var workbook = excelUtil.makeExcelMultiSheet(sheetDatas);
+    
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', 'attachment; filename=' + filename);
+    
+    return workbook.xlsx.write(res)
+    .then(function() {
         res.end();
     });
 });

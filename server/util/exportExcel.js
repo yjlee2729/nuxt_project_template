@@ -2,29 +2,62 @@ const Excel = require('exceljs');
 const consola = require('consola');
 const _ = require('lodash');
 
-exports.makeExcel = function(header, rows){
+exports.makeExcel = function(columns, rows){
     
     var workbook = new Excel.Workbook();
     workbook.created = new Date();
-       
-    var worksheet = workbook.addWorksheet('Sheet1');
+    
+    var sheetData = {}
+    sheetData.columns = columns;
+    sheetData.datas = rows;
+    sheetData.title = 'Sheet1';
+    workbook = makeNewWorkSheet(workbook, sheetData);
+
+    //----------------------------------------------------
+    consola.info({message : 'Success making excel file'});
+    return workbook;
+}
+
+/**
+ * 
+ * @param Array sheetDatas
+ *  title : sheet name
+ *  datas : rows
+ *  columns : headers
+ *  
+ */
+exports.makeExcelMultiSheet = function (sheetDatas) {
+    var workbook = new Excel.Workbook();
+    workbook.created = new Date();
+
+    _.forEach(sheetDatas, (sheetData)=>{
+        workbook = makeNewWorkSheet(workbook, sheetData);
+    })
+
+    consola.info({message : 'Success making multiple sheet excel file'});
+    return workbook;
+}
+
+var makeNewWorkSheet = function(workbook, sheetData){
+    var rows = sheetData.datas;
+    var columns = sheetData.columns;
+    var title = sheetData.title || 'Sheet1';
+    var worksheet = workbook.addWorksheet(title);
 
     if (!Array.isArray(rows)) rows = [rows];
 
     if(rows.length == 0){
-        consola.warn({message : 'There is no data for making excel.', badge: true});
+        consola.warn({message : title + ' : There is no data for making excel.', badge: true});
         return workbook;
     }
-
-    var columns = getHeaderColumns(header, rows[0]);
-    worksheet.columns = columns;
+    
+    worksheet.state = 'visible';
+    worksheet.columns = getHeaderColumns(columns, rows[0]);
 
     if (columns.length != 0) changeHeaderStyle(worksheet, columns.length);
     
     worksheet.addRows(rows);
 
-    //----------------------------------------------------
-    consola.info({message : 'Success making excel file'});
     return workbook;
 }
 
